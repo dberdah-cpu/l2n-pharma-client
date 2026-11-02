@@ -49,12 +49,12 @@ nav.cats button:hover{background:#EFEDFB;color:var(--ink);}
 nav.cats button.active{background:var(--purple);color:#fff;font-weight:700;}
 
 main{flex:1;padding:24px 22px 80px;min-width:0;}
-.search-row{display:flex;gap:10px;margin-bottom:20px;position:sticky;top:76px;z-index:30;background:var(--paper);padding:10px 0 10px;}
-.promo-filter-btn{background:#fff;border:1.5px solid #D3486A;color:#D3486A;border-radius:10px;
+.search-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:stretch;gap:10px;-webkit-transform:translateZ(0);margin-bottom:20px;position:sticky;top:76px;z-index:30;background:var(--paper);padding:10px 0 10px;}
+.promo-filter-btn{-webkit-appearance:none;appearance:none;background:#fff;border:1.5px solid #D3486A;color:#D3486A;border-radius:10px;
   padding:0 16px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;}
 .promo-filter-btn.active{background:#D3486A;color:#fff;}
 
-.search-row input{flex:1 1 0;min-width:0;width:100%;padding:12px 16px;border-radius:10px;border:1.5px solid var(--line);font-size:14px;background:#fff;}
+.search-row input{-webkit-appearance:none;appearance:none;min-width:0;width:100%;box-sizing:border-box;padding:12px 16px;border-radius:10px;border:1.5px solid var(--line);font-size:14px;background:#fff;}
 .search-row input:focus{outline:none;border-color:var(--purple);}
 
 .cat-title{font-size:22px;margin:4px 0 4px;font-weight:800;}
@@ -1116,6 +1116,14 @@ function togglePromoFilter(){
   renderProducts();
   window.scrollTo({top:0,behavior:'smooth'});
 }
+function fixSearchRow(){
+  const r=document.querySelector('.search-row'); if(!r) return;
+  r.style.display='none'; void r.offsetHeight; r.style.display='';
+}
+window.addEventListener('load',()=>{fixSearchRow();setTimeout(fixSearchRow,400);setTimeout(fixSearchRow,1500);});
+window.addEventListener('pageshow',()=>setTimeout(fixSearchRow,50));
+window.addEventListener('resize',fixSearchRow);
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fixSearchRow);
 function updatePromoFilterBtn(){
   const btn = document.getElementById('promoFilterBtn');
   if(!btn) return;
