@@ -125,6 +125,10 @@ main{flex:1;padding:24px 22px 80px;min-width:0;}
 .dline .drm{background:none;border:none;color:#D3486A;cursor:pointer;font-size:16px;padding:0 2px;}
 .drawer-empty{color:var(--muted);text-align:center;padding:60px 20px;font-size:14px;}
 .drawer-foot{padding:16px 20px;border-top:1px solid var(--line);}
+.franco{border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:13px;line-height:1.4;background:#FFF4E5;color:#9A5B00;border:1px solid #F5C77E;}
+.franco.ok{background:#EAF7EF;color:#1E7A45;border-color:#9ED7B4;}
+.franco .fbar{height:6px;border-radius:3px;background:rgba(0,0,0,.08);margin-top:7px;overflow:hidden;}
+.franco .fbar i{display:block;height:100%;background:#F08A24;border-radius:3px;}
 .drawer-foot .totrow{display:flex;justify-content:space-between;font-size:15px;margin-bottom:14px;}
 .drawer-foot .totrow strong{font-size:20px;color:var(--purple-dark);}
 .drawer-foot button.validate{width:100%;background:var(--orange);color:#fff;border:none;border-radius:10px;padding:14px;
@@ -285,6 +289,7 @@ main{flex:1;padding:24px 22px 80px;min-width:0;}
   <div class="drawer-foot">
     <label style="display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:6px;">Nom du client</label>
     <input type="text" id="clientName" placeholder="Ex. Pharmacie du Centre" style="width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid var(--line);font-size:13.5px;margin-bottom:14px;">
+    <div class="franco" id="francoBox" style="display:none"></div>
     <div class="totrow"><span>Total (<span id="totQty">0</span> articles)</span><strong id="totPrice">0,00 €</strong></div>
     <button class="validate" onclick="showOrder()">Valider la commande</button>
     <button class="clear" onclick="clearCart()">Vider le panier</button>
@@ -1441,6 +1446,14 @@ function modeLabel(p, mode){
   return 'Automatique';
 }
 
+const FRANCO = 130; // franco de port (HT)
+function updateFranco(total){
+  const b = document.getElementById('francoBox'); if(!b) return;
+  if(!(total>0)){ b.style.display='none'; return; }
+  b.style.display='block';
+  if(total >= FRANCO - 0.004){ b.className='franco ok'; b.innerHTML='✅ <strong>Franco de port atteint</strong> (à partir de '+fmt(FRANCO)+' HT) : pas de frais de port.'; }
+  else { b.className='franco'; b.innerHTML='🚚 Il vous manque <strong>'+fmt(FRANCO-total)+'</strong> HT pour ne pas payer le port (franco à '+fmt(FRANCO)+' HT).<div class="fbar"><i style="width:'+Math.max(2,Math.min(100,total/FRANCO*100)).toFixed(0)+'%"></i></div>'; }
+}
 function updateCartUI(){
   const entries = cartEntries();
   const totalQty = entries.filter(e=>e.p.cat>=0).reduce((s,e)=>s+e.qty,0);
@@ -1448,6 +1461,7 @@ function updateCartUI(){
   document.getElementById('cartBadge').textContent = totalQty;
   document.getElementById('totQty').textContent = totalQty;
   document.getElementById('totPrice').textContent = fmt(totalPrice);
+  updateFranco(totalPrice);
 
   const container = document.getElementById('drawerItems');
   if(entries.length===0){

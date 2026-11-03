@@ -1,6 +1,6 @@
 // Service worker L2N Pharma — permet un fonctionnement hors-ligne
 // après une première visite avec connexion internet.
-const CACHE_NAME = 'l2n-pharma-client-v9';
+const CACHE_NAME = 'l2n-pharma-client-v10';
 const FILES_TO_CACHE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (event) => {
