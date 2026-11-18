@@ -636,7 +636,7 @@ const P = [
 // HYGIENE BUCCO-DENTAIRE (3)
 ["Solution stérile Bicalan bain de bouche","3401598840585",3,[[20,2.29],[40,2.09],[80,1.99]]],
 ["Fil dentaire ciré 50 mètres","3760415200583",3,[[12,2.09],[24,1.99],[48,1.79]]],
-["Brosse à dents souple medium x1","3770027513834",3,[[24,0.79],[48,0.69],[96,0.59]]],
+["Brosse à dents souple medium x1","3770027513834",99,[[24,0.79],[48,0.69],[96,0.59]]],
 ["Brosse à dents souple verte","3760415200613",3,[[24,0.79],[48,0.69],[96,0.59]]],
 ["Brosse à dents souple bleue","3760415200620",3,[[24,0.79],[48,0.69],[96,0.59]]],
 ["Brosse à dents poils souples x3","3770027513827",3,[[24,0.99],[48,0.89],[96,0.85]]],
@@ -802,7 +802,7 @@ const P = [
 ["Tests combo COVID/Grippe/VRS Sejoy — boîte de 25","6939663978415",12,[[25,1.05],[100,0.95],[250,0.90]]],
 ["Éthylotest Freedrive 3","3700074700192",12,[[50,1.09],[100,0.99],[200,0.89]]],
 // EQUIPEMENTS DE PROTECTION INDIVIDUELLE (13)
-["Masques français Type 2R — boîte de 50","3701437500145",13,[[1,1.45],[2,1.25],[4,1.15]]],
+["Masques français Type 2R — boîte de 50","3701437500145",99,[[1,1.45],[2,1.25],[4,1.15]]],
 ["Masques Type 2R bleus — boîte de 50","3760415201153",13,[[20,1.75],[40,1.55],[80,1.45],[160,1.25]]],
 ["Masques Type 2R noirs — boîte de 50","3760415201160",13,[[20,1.75],[40,1.55],[80,1.45],[160,1.25]]],
 ["FFP2 — boîte de 10","3760415201177",13,[[100,0.26],[400,0.26],[800,0.26]]],
@@ -1314,7 +1314,7 @@ function renderProducts(){
   const q = document.getElementById('search').value.trim().toLowerCase();
   let list;
   if(q){
-    list = PRODUCTS.filter(p=>p.cat>=0 && (p.name.toLowerCase().includes(q) || p.ean.includes(q)));
+    list = PRODUCTS.filter(p=>p.cat>=0 && p.cat<90 && (p.name.toLowerCase().includes(q) || p.ean.includes(q)));
     document.getElementById('catTitle').textContent = 'Résultats pour « '+q+' »';
   } else if(promoFilterActive){
     list = PRODUCTS.filter(p=>PROMO_BADGES[p.id]);
